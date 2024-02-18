@@ -8,18 +8,20 @@ import org.springframework.stereotype.Component;
 public class User {
     String username;
     String password;
+    String email;
     int userId;
 
-    String role;
+    String roleId;
     String createAt;
     String updateAt;
 
     public User() {
     }
 
-    public User(String username, String password, String role) {
+    public User(String username, String password, String roleId,String email) {
         this.username = username;
         this.password = password;
-        this.role = role;
+        this.roleId = roleId;
+        this.email = email;
     }
 }

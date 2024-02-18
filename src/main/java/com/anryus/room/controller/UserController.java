@@ -6,6 +6,8 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.anryus.room.model.JsonVO;
 import com.anryus.room.model.User;
 import com.anryus.room.service.UserService;
+import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.Session;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,14 +42,14 @@ public class UserController {
     }
 
     @PostMapping("/registry")
-    public String registry(@Param("username") String username, @Param("password") String password, @Param("role") String role) {
-        User user = new User(username, password, role);
-        int i = userService.registerNewUser(user);
-        if (i>0){
-            return JsonVO.success(true);
-        }else {
-            return JsonVO.fail(UNKNOWN_ERROR);
-        }
+    public String registry(@Param("username") String username,
+                           @Param("password") String password,
+                           @Param("role") String role,
+                           @Param("email")String email,
+                           @Param("code")String code,
+                           Session session) {
+        userService.validateAndRegister(username,password,email,code,role,session.getId());
+        return JsonVO.success("注册成功");
     }
 
     @GetMapping("/info")
@@ -57,11 +59,10 @@ public class UserController {
         return JsonVO.success(userInfoByUserId);
     }
 
-    @DeleteMapping("/delete")
-    @SaCheckPermission("user.delete")
-    public String deleteUser(@Param("userId")int userId) {
-        userService.deleteUser(userId);
-        return JsonVO.success(true);
+    @PostMapping("/resetPassword")
+    public String resetPassword(@Param("email")String email, @Param("password") String password, @Param("code")String code, HttpSession session) {
+        userService.resetPassword(email, password,code,session.getId());
+        return JsonVO.success("重置成功");
     }
 
     @PostMapping("/update")
@@ -69,6 +70,16 @@ public class UserController {
     public String updateUser(@Param("user")User user){
         userService.updateUserInfo(user);
         return JsonVO.success(true);
+    }
+
+    @PostMapping("/validateCode")
+    public String validateCode(@Param("email")String email, @Param("hasAccount")boolean hasAccount,HttpSession session){
+        String code = userService.sendValidateEmail(email,session.getId(),hasAccount);
+        if (code!=null){
+            return JsonVO.success(code);
+        }else {
+            return JsonVO.fail("错误");
+        }
     }
 
 }

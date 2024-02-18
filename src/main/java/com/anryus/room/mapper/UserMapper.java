@@ -12,7 +12,7 @@ public interface UserMapper {
     @Select("select user_id,password,role_id,create_at,update_at from t_user where username = #{username}")
     User getUserByUsername(String username);
 
-    @Insert("insert into t_user(username,password,role_id,create_at,update_at) values (#{username},#{password},#{role},now(),now())")
+    @Insert("insert into t_user(username,password,role_id,email,create_at,update_at) values (#{username},#{password},#{roleId},#{email},now(),now())")
     int insertNewUser(User user);
 
     @Update("update t_user set password = #{password},update_at = now()")
@@ -29,5 +29,7 @@ public interface UserMapper {
 
     List<User> batchSelectUserInfo(@Param("userIds") List<Integer> userIds);
 
+    @Select("select username,password,role_id,create_at,update_at from t_user where email = #{email}")
+    User getUserByEmail(String email);
 
 }
