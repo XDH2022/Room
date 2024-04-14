@@ -33,8 +33,9 @@ public class ChatChannel {
     public void onMessage(@PathParam("token") String token,String message,Session session) {
         logger.log(Level.INFO,message);
         Chat chat = CommonExtKt.fromJson(message, Chat.class);
-        chat.setCreateAt(new Date(System.currentTimeMillis()));
-        chat.setUpdateAt(new Date(System.currentTimeMillis()));
+        Date systemDate = new Date(System.currentTimeMillis());
+        chat.setCreateAt(systemDate);
+        chat.setUpdateAt(systemDate);
         int userId = TokenUtil.getUserIdByToken(token);
         if (userId!=-1){
             chat.setSendUserId(userId);
