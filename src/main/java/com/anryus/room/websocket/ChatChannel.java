@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +31,10 @@ public class ChatChannel {
 
     @OnMessage
     public void onMessage(@PathParam("token") String token,String message,Session session) {
+        logger.log(Level.INFO,message);
         Chat chat = CommonExtKt.fromJson(message, Chat.class);
+        chat.setCreateAt(new Date(System.currentTimeMillis()));
+        chat.setUpdateAt(new Date(System.currentTimeMillis()));
         int userId = TokenUtil.getUserIdByToken(token);
         if (userId!=-1){
             chat.setSendUserId(userId);
