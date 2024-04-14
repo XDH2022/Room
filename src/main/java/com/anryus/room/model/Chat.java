@@ -11,5 +11,6 @@ public class Chat  extends BaseModel{
     int sendUserId;
     int receiveId;
     int roomId;
+    int ownerId;
     String content;
 }

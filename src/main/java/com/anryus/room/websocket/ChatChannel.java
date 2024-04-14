@@ -16,10 +16,13 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Component
 @ServerEndpoint(value = "/channel/{token}")
 public class ChatChannel {
+    Logger logger = Logger.getLogger(this.getClass().getName());
 
     ChatHandler chatHandler = SpringContextHolder.getBean(ChatHandler.class);
 
@@ -40,6 +43,7 @@ public class ChatChannel {
 
     @OnOpen
     public void onOpen(Session session, @PathParam("token") String token) {
+        logger.log(Level.INFO,"Websocket connect : "+token);
         var id = (String) StpUtil.getLoginIdByToken(token);
         if (id != null) {
             userHandler.userOnLine(id, session);
