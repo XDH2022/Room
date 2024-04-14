@@ -1,19 +1,16 @@
 package com.anryus.room.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.stereotype.Component;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-@Component
-public class User {
+public class User extends BaseModel{
     String username;
     String password;
     String email;
-    int userId;
-
     String roleId;
-    String createAt;
-    String updateAt;
 
     public User() {
     }

@@ -38,34 +38,18 @@ public class UserService {
      * @param username 注册用户名
      * @param password 密码
      * @param email    注册邮箱地址
-     * @param code     验证码
      * @param id       session id
      */
-    public void validateAndRegister(String username, String password, String email, String code, String role, String id) {
+    public void register(String username, String password, String email, String role, String id) {
 
         if (userMapper.getUserByUsername(username) != null) {
             throw new UserAlreadyExistException();
         }
 
-        String key = email + ":" + id + ":false";
-
-        if (Boolean.TRUE.equals(template.hasKey(key))) {
-            String s = template.opsForValue().get(key);//获取redis内储存的验证码，若不存在则表示未获取过验证码或者已过期
-            if (s == null) {
-                throw new UserVerifyException();
-            } else if (s.equals(code)) {
-                template.delete(key);//删除储存的验证码
-
-                password = BCrypt.hashpw(password);
-                User user = new User(username, password, role, email);
-                if (userMapper.insertNewUser(user) <= 0) {
-                    throw new RuntimeException();
-                }
-            }
-
-        } else {
-            //未请求过验证码
-            throw new UserVerifyException();
+        password = BCrypt.hashpw(password);
+        User user = new User(username, password, role, email);
+        if (userMapper.insertNewUser(user) <= 0) {
+            throw new RuntimeException();
         }
     }
 
@@ -103,7 +87,7 @@ public class UserService {
     }
 
     public int updateUserInfo(User user) {
-        boolean exist = checkUserExist(user.getUserId());
+        boolean exist = checkUserExist(user.getId());
         if (exist) {
             return userMapper.updateUserPassword(user);
         } else {

@@ -30,7 +30,7 @@ public class UserController {
     @PostMapping("/login")
     public String login(@Param("username") String username, @Param("password") String password) {
         User user = userService.userLogin(username, password);
-        StpUtil.login(user.getUserId());
+        StpUtil.login(user.getId());
         return JsonVO.success(StpUtil.getTokenValue());
     }
 
@@ -46,9 +46,8 @@ public class UserController {
                            @Param("password") String password,
                            @Param("role") String role,
                            @Param("email")String email,
-                           @Param("code")String code,
                            Session session) {
-        userService.validateAndRegister(username,password,email,code,role,session.getId());
+        userService.register(username,password,email,role,session.getId());
         return JsonVO.success("注册成功");
     }
 

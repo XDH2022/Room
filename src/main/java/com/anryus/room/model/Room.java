@@ -1,16 +1,14 @@
 package com.anryus.room.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.stereotype.Component;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-@Component
-public class Room {
-    int roomId;
+public class Room extends BaseModel{
     String roomName;
     String roomDescription;
-    String createAt;
-    String updateAt;
 
     public Room() {
     }

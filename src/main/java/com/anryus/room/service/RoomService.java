@@ -42,7 +42,7 @@ public class RoomService {
     }
 
     public Room updateRoom(Room room){
-        Boolean exist = checkRoomExist(room.getRoomId());
+        Boolean exist = checkRoomExist(room.getId());
         if (exist){
             int i = roomMapper.updateRoom(room);
             if (i<1){

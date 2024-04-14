@@ -26,7 +26,7 @@ public class PermissionService {
     public List<Permission> getPermissionByUserId(int userId){
         try{
             List<Role> roleByUserId = userMapper.getRoleByUserId(userId);
-            List<Integer> roleIds = roleByUserId.stream().map(Role::getRoleId).toList();
+            List<Integer> roleIds = roleByUserId.stream().map(Role::getId).toList();
 
             List<Integer> permissionIds = permissionMapper.getPermissionIdByRoleId(roleIds);
             return permissionMapper.getPermissionById(permissionIds);
