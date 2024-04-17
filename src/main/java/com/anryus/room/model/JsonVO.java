@@ -22,6 +22,11 @@ public class JsonVO<E> {
         return CommonExtKt.toJson(new JsonVO<T>(StatusCode.SUCCESS.getCode(), StatusCode.SUCCESS.getMessage(), data, System.currentTimeMillis()));
     }
 
+    public static <T> JsonVO<T> successByObject(T data) {
+        return new JsonVO<>(StatusCode.SUCCESS.getCode(), StatusCode.SUCCESS.getMessage(), data, System.currentTimeMillis());
+    }
+
+
     public static <T> String fail(StatusCode statusCode) {
         return CommonExtKt.toJson(new JsonVO<T>(statusCode.getCode(), statusCode.getMessage(), null, System.currentTimeMillis()));
     }

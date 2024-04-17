@@ -26,6 +26,7 @@ let roomInfo = reactive({
   roomId:1,
 })
 
+let rooms = ref([])
 
 function sendMessage(content) {
   let msg =  new Chat(2,1,1,2,content).toJson()
@@ -40,8 +41,15 @@ function getRoomChatHistory(){
   })
 }
 
+function getRooms(){
+  get("/api/room/list" , (data) => {
+    rooms.value = data
+  })
+}
+
 function init(){
   getRoomChatHistory()
+  getRooms()
 }
 
 init()
@@ -50,23 +58,33 @@ init()
 
 <template>
   <div style="width: 100vw;height: 100vh">
-    <el-main>
-      <div style="height: 90vh">
-        <div v-for="item in message.queue">
+    <el-container>
+      <el-aside width="200px">
+        <div v-for="item in rooms">
 
         </div>
-      </div>
-    </el-main>
-    <el-footer>
-      <el-row>
-        <el-col :span="8" :push="8" class="inputBar">
-          <el-input type="textarea" v-model="inputValue"/>
-        </el-col>
-        <el-col :span="4" :push="8">
-          <el-button class="el-button--success" v-on:click="sendMessage(inputValue)" v-bind:disabled="!inputValue.length>0">Send</el-button>
-        </el-col>
-      </el-row>
-    </el-footer>
+      </el-aside>
+      <el-container>
+        <el-main>
+          <div style="height: 90vh">
+            <div v-for="item in message.queue">
+
+            </div>
+          </div>
+        </el-main>
+        <el-footer>
+          <el-row>
+            <el-col :span="8" :push="8" class="inputBar">
+              <el-input type="textarea" v-model="inputValue"/>
+            </el-col>
+            <el-col :span="4" :push="8">
+              <el-button class="el-button--success" v-on:click="sendMessage(inputValue)" v-bind:disabled="!inputValue.length>0">Send</el-button>
+            </el-col>
+          </el-row>
+        </el-footer>
+      </el-container>
+    </el-container>
+
   </div>
 
 </template>

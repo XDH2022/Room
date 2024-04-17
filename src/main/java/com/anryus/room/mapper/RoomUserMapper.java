@@ -1,5 +1,6 @@
 package com.anryus.room.mapper;
 
+import com.anryus.room.model.Room;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -17,4 +18,7 @@ public interface RoomUserMapper {
 
     @Insert("insert into t_user_room(user_id,is_archive,room_id) values (#{userId},false,#{roomId})")
     void insertRoomUser(int userId,int roomId);
+
+    @Select("select * from t_user_room where user_id = #{userId}")
+    List<Room> getRoomsByUser(int userId);
 }

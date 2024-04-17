@@ -6,6 +6,8 @@ import com.anryus.room.mapper.RoomMapper;
 import com.anryus.room.model.Room;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RoomService {
     private final RoomMapper roomMapper;
