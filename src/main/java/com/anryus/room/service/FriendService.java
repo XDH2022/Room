@@ -3,6 +3,7 @@ package com.anryus.room.service;
 import com.anryus.room.mapper.FriendMapper;
 import com.anryus.room.mapper.UserMapper;
 import com.anryus.room.model.Friend;
+import com.anryus.room.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +23,18 @@ public class FriendService {
         return friendMapper.getFriendList(userId);
     }
 
-    public boolean addFriend(int ownerId,int friendId){
-        //todo 加入队列向被加好友的一方发送审批消息
+
+    public boolean addFriend(int requestUserId, int targetUserId) {
+        User request = userMapper.getUserInfoByUserId(requestUserId);
+        User target = userMapper.getUserInfoByUserId(targetUserId);
+        if (request == null && target == null) {
+            Friend friend = new Friend();
+            friend.setOwner_id(requestUserId);
+            friend.setFriend_id(targetUserId);
+            int result = friendMapper.insertFriend(friend);
+            return result == 1;
+        }
+
         return false;
     }
 }

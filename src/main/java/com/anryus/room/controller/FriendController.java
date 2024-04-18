@@ -23,8 +23,9 @@ public class FriendController {
     }
 
     @PostMapping("/add")
-    public String addFriends(){
-        return null;
+    public String addFriends(@RequestParam("requestId") Integer requestId, @RequestParam("targetId") Integer targetId) {
+        boolean result = friendService.addFriend(requestId, targetId);
+        return JsonVO.success(result);
     }
 
 }
