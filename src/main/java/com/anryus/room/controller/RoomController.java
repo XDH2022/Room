@@ -86,4 +86,10 @@ public class RoomController {
         }
         return JsonVO.success(chatService.getChatsInRoom(roomId, StpUtil.getLoginIdAsInt(),lastTime));
     }
+
+    @GetMapping("/list")
+    @SaCheckLogin
+        public JsonVO<List<Room>> getRoomList(){
+        return JsonVO.successByObject(roomUserService.getRoomList(StpUtil.getLoginIdAsInt()));
+    }
 }

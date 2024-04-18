@@ -2,6 +2,7 @@ package com.anryus.room.service;
 
 import com.anryus.room.exception.AlreadyInRoomException;
 import com.anryus.room.mapper.RoomUserMapper;
+import com.anryus.room.model.Room;
 import com.anryus.room.model.User;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,10 @@ public class RoomUserService {
     public List<User> getUsersInRoom(int roomId){
         List<Integer> usersIdInRoom = getUsersIdInRoom(roomId);
         return userService.getUsersInfo(usersIdInRoom);
+    }
+
+    public List<Room> getRoomList(int userId){
+        return roomUserMapper.getRoomsByUser(userId);
     }
 
 }
